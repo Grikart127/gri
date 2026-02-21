@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ModulaCore Engine | Kombin_1</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        
+        body { 
+            display: flex; 
+            flex-direction: row; 
+            height: 100vh; 
+            background: #1a1a1a; 
+            overflow: hidden; 
+        }
+
+        /* RENDER ALANI */
+        .render-container { 
+            width: 75%; 
+            height: 100vh; 
+            position: relative; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            background: #000;
+        }
+        
+        .sahne-container { 
+            width: 100%; 
+            height: 100%; 
+            position: relative; 
+            background: url('Kombin_1/AnaSahne_1.png') center/contain no-repeat; 
+        }
+        
+        .dolap-govde { 
+            position: absolute; inset: 0; 
+            background: url('Kombin_1/Kombin_1.png') center/contain no-repeat; 
+            z-index: 10; 
+        }
+        
+        .kapak { 
+            position: absolute; inset: 0; 
+            background-size: contain; 
+            background-position: center; 
+            background-repeat: no-repeat; 
+            z-index: 20; 
+            opacity: 0; 
+            transition: opacity 0.3s ease; 
+            pointer-events: none; 
+        }
+
+        .hotspot { position: absolute; z-index: 100; cursor: pointer; background: transparent; -webkit-tap-highlight-color: transparent; }
+        
+        /* SAĞ MENÜ */
+        .menu { 
+            width: 25%; 
+            background: #fff; 
+            padding: 30px; 
+            border-left: 1px solid #ddd; 
+            z-index: 200; 
+            overflow-y: auto;
+        }
+
+        .btn { 
+            width: 100%; padding: 15px; margin: 10px 0; cursor: pointer; 
+            border: 2px solid #eee; border-radius: 12px; font-weight: 600; 
+            text-align: left; transition: 0.3s; background: #fff;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .btn.active { background: #007bff; color: white; border-color: #0056b3; }
+
+        /* MOBIL DÜZEN (Tablet ve Telefonlar) */
+        @media screen and (max-width: 1024px) {
+            body { flex-direction: column; }
+            .render-container { width: 100%; height: 60vh; }
+            .menu { 
+                width: 100%; 
+                height: 40vh; 
+                border-left: none; 
+                border-top: 1px solid #ddd; 
+                padding: 20px; 
+                border-radius: 20px 20px 0 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="render-container">
+    <div class="sahne-container">
+        <div class="dolap-govde"></div>
+
+        <div id="k1" class="kapak"></div><div id="k2" class="kapak"></div><div id="k3" class="kapak"></div>
+        <div id="k4" class="kapak"></div><div id="k5" class="kapak"></div><div id="k6" class="kapak"></div>
+        <div id="k7" class="kapak"></div><div id="k8" class="kapak"></div><div id="k9" class="kapak"></div>
+
+        <div class="hotspot" style="left: 20.47%; top: 21.10%; width: 6.88%; height: 80.20%;" onclick="tak(1,'3200427546')"></div>
+        <div class="hotspot" style="left: 26.98%; top: 22.10%; width: 6.04%; height: 77.80%;" onclick="tak(2,'3200427545')"></div>
+        <div class="hotspot" style="left: 32.97%; top: 23.00%; width: 5.63%; height: 75.60%;" onclick="tak(3,'3200427546')"></div>
+        <div class="hotspot" style="left: 38.59%; top: 23.90%; width: 8.18%; height: 73.50%;" onclick="tak(4,'3200427546')"></div>
+        <div class="hotspot" style="left: 46.77%; top: 23.30%; width: 6.51%; height: 74.90%;" onclick="tak(5,'3200427546')"></div>
+        <div class="hotspot" style="left: 52.97%; top: 22.60%; width: 7.03%; height: 76.60%;" onclick="tak(6,'3200427545')"></div>
+        <div class="hotspot" style="left: 59.95%; top: 21.80%; width: 7.14%; height: 78.50%;" onclick="tak(7,'3200427546')"></div>
+        <div class="hotspot" style="left: 67.03%; top: 21.00%; width: 7.50%; height: 80.40%;" onclick="tak(8,'3200427545')"></div>
+        <div class="hotspot" style="left: 74.22%; top: 20.10%; width: 8.18%; height: 82.40%;" onclick="tak(9,'3200427545')"></div>
+    </div>
+</div>
+
+<div class="menu">
+    <h2 style="font-size: 22px; margin-bottom: 15px;">OPTIMA Konfigüratör</h2>
+    <p style="font-size: 14px; color: #666; margin-bottom: 20px;">Kapağı seçin ve dolaba dokunun.</p>
+    
+    <button id="p-btn" class="btn active" onclick="setMod('panjur')">
+        <span>🚪</span> Panjur Kapak (Meşe)
+    </button>
+    <button id="off-btn" class="btn" onclick="setMod('off')">
+        <span>🚫</span> Kapakları Temizle
+    </button>
+</div>
+
+<script>
+    let mod = 'panjur';
+
+    function setMod(m) { 
+        mod = m; 
+        document.getElementById('p-btn').className = (m === 'panjur' ? 'btn active' : 'btn');
+        document.getElementById('off-btn').className = (m === 'off' ? 'btn active' : 'btn');
+        if(m === 'off') {
+            for(let i=1; i<=9; i++) document.getElementById('k'+i).style.opacity = 0;
+        }
+    }
+
+    function tak(p, sku) {
+        if(mod === 'off') return;
+        const el = document.getElementById('k' + p);
+        el.style.backgroundImage = `url('Kombin_1/Kapak${p}_${sku}.png')`;
+        el.style.opacity = 1;
+    }
+</script>
+
+</body>
+</html>
